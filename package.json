@@ -22,6 +22,7 @@
     "watchify": "^3.3.1"
   },
   "dependencies": {
+    "body-parser": "^1.14.2",
     "compression": "^1.5.2",
     "express": "^4.13.1",
     "history": "^1.13.1",
