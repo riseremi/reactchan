@@ -8,6 +8,7 @@ var nedb = require('./server/db.js');
 
 // enable gzip compression
 app.use(compress());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({limit: '10kb'}));
 app.use(favicon(__dirname + '/dist/favicon.ico'));
 
@@ -25,7 +26,7 @@ app.use('/', express.static(__dirname + '/dist'));
 APIEndpoints.use(app);
 
 // test database call
-nedb();
+nedb.init();
 
 // since we're building an SPA, return index.html by default
 app.get('*', function(req, res) {

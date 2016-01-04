@@ -5,27 +5,39 @@ var postsDB = new Datastore({
 	autoload: true
 });
 
-module.exports = function () {
+module.exports = {
 
-	// 1 hour * 60 mins * 60 secs * 1000 ms
-	postsDB.persistence.setAutocompactionInterval(1 * 60 * 60 * 1000);
+	init: function () {
 
-	var doc = {
-		hello: 'world',
-		n: 5,
-		today: new Date(),
-		nedbIsAwesome: true,
-		notthere: null,
-		notToBeSaved: undefined // Will not be saved
-			,
-		fruits: ['apple', 'orange', 'pear'],
-		infos: {
-			name: 'nedb'
-		}
-	};
+		// 1 hour * 60 mins * 60 secs * 1000 ms
+		postsDB.persistence.setAutocompactionInterval(1 * 60 * 60 * 1000);
+	},
 
-	postsDB.insert(doc, function (err, newDoc) { // Callback is optional
-		// newDoc is the newly inserted document, including its _id
-		// newDoc has no key called notToBeSaved since its value was undefined
-	});
+	getDB: function () {
+		return postsDB;
+	},
+
+	insertPost: function (post, cb) {
+		var maxIndex;
+
+		postsDB.count({}, function (err, count) {
+			maxIndex = count;
+
+			post.id = maxIndex + 1;
+
+			postsDB.insert(post, function (err, newDoc) { // Callback is optional
+				// newDoc is the newly inserted document, including its _id
+				cb();
+			});
+		});
+	},
+
+	findAllPosts: function (cb) {
+		postsDB.find({}).sort({
+			id: 1
+		}).exec(function (err, docs) {
+			cb(docs);
+		});
+	}
+
 };

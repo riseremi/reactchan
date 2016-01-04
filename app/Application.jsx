@@ -11,7 +11,7 @@ import ThreadView from './views/ThreadView';
 render((
 	<Router history={history}>
 		<Route path='/' component={Layout}>
-			<IndexRoute component={HelloWorld}/>
+			<IndexRoute component={ThreadView}/>
 			<Route path='/dev/res/:thread_id' component={ThreadView}/>
 			<Route path='*' component={Page404View}/>
 		</Route>
