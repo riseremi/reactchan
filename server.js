@@ -2,6 +2,7 @@ var express = require('express');
 var compress = require('compression');
 var app = express();
 var favicon = require('serve-favicon');
+var APIEndpoints = require('./APIEndpoints');
 
 // enable gzip compression
 app.use(compress());
@@ -15,6 +16,8 @@ app.use(function(req, res, next) {
 
 // serve / as /dist
 app.use('/', express.static(__dirname + '/dist'));
+
+APIEndpoints.use(app);
 
 // since we're building an SPA, return index.html by default
 app.get('*', function(req, res) {
