@@ -2,12 +2,25 @@
 <html>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ReactJS ES6 Project Template</title>
     <link rel="stylesheet" href="./assets/styles/main.css" type="text/css" />
     <style type="text/css">
         body {
             background-color: #FFFFEE;
             margin-left: 200px;
+        }
+        @media (max-width: 720px) {
+            body {
+                margin: 0;
+                padding: 0 10px;
+                font-size: 13px;
+            }
+            
+            .post-wrapper, textarea {
+                min-width: 100% !important;
+                width: 100% !important;
+            }
         }
     </style>
 </head>
