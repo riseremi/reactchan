@@ -9,7 +9,7 @@ export default class Layout extends React.Component {
 				<h1>React Router</h1>
 				<ul>
 					<li><Link to='/'>Home</Link></li>
-					<li><Link to='gw'>Goodbye, world!</Link></li>
+					<li><Link to='/dev/res/1'>thread</Link></li>
 					<li><a href='typeanythingyouwant'>404</a></li>
 				</ul>
 				<h1>Layout</h1>
