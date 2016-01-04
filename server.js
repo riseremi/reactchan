@@ -1,9 +1,11 @@
 var express = require('express');
 var compress = require('compression');
 var app = express();
+var favicon = require('serve-favicon');
 
 // enable gzip compression
 app.use(compress());
+app.use(favicon(__dirname + '/dist/favicon.ico'));
 
 // write request method and URI in the console
 app.use(function(req, res, next) {
