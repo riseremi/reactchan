@@ -19,10 +19,15 @@ module.exports = {
 
 	insertPost: function (post, cb) {
 		var maxIndex;
+		
+		if(post.text.length < 1) {
+			console.log('Cannot add an empty post');
+			return;
+		}
 
-		postsDB.count({}, function (err, count) {
-			maxIndex = count;
-
+		postsDB.find({}).sort({id: -1}).limit(1).exec(function (err, docs) {
+			console.log(docs);
+			maxIndex = docs[0].id;
 			post.id = maxIndex + 1;
 
 			postsDB.insert(post, function (err, newDoc) { // Callback is optional
@@ -34,7 +39,7 @@ module.exports = {
 
 	findAllPosts: function (cb) {
 		postsDB.find({}).sort({
-			id: 1
+			id: -1
 		}).exec(function (err, docs) {
 			cb(docs);
 		});

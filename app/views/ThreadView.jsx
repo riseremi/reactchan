@@ -7,7 +7,10 @@ export default class ThreadView extends React.Component {
 		super(props);
 
 		this.state = {
-			posts: []
+			posts: [],
+			timer: {},
+			counter: {},
+			timeOut: 10
 		};
 	}
 
@@ -39,6 +42,9 @@ export default class ThreadView extends React.Component {
 				this.setState({
 					posts: data
 				});
+				humane.log('Updated', {
+					timeout: 1000
+				});
 			}
 		};
 
@@ -63,14 +69,54 @@ export default class ThreadView extends React.Component {
 		document.getElementById('text').value = '';
 	}
 
+	autoUpdateHandler(event) {
+		let autoUpdate = event.target.checked;
+		const TIMEOUT = 10000;
+
+
+		if (autoUpdate) {
+			let timer = setInterval(() => {
+				this.updatePosts();
+				this.setState({
+					timeOut: TIMEOUT / 1000
+				});
+			}, TIMEOUT);
+
+			let counter = setInterval(() => {
+				document.getElementById('autoUpdate-text').innerHTML = `Автообновление (${this.state.timeOut})`;
+				this.setState({
+					timeOut: this.state.timeOut - 1
+				});
+			}, 1000);
+
+			this.setState({
+				timer: timer,
+				counter: counter
+			});
+		}
+
+		if (!autoUpdate) {
+			clearInterval(this.state.timer);
+			clearInterval(this.state.counter);
+			this.setState({timeOut: TIMEOUT});
+			document.getElementById('autoUpdate-text').innerHTML = 'Автообновление';
+		}
+	}
+
 	render() {
 		return <div>
 		
 			<textarea id='text' cols='48' rows='4' placeholder='Your message'/>
 			<br/>
 			<button onClick={this.sendPostHandler.bind(this)}>Send</button>
-			<br/><br/>
-			<button onClick={this.updatePosts.bind(this)}>Refresh</button>
+			&nbsp;
+			<button className='refresh' onClick={this.updatePosts.bind(this)}>Refresh</button>
+			&nbsp;
+			
+			<label className="postername" style={{fontFamily: 'sans-serif'}}>
+				<input type="checkbox" onChange={this.autoUpdateHandler.bind(this)}/>
+				<span id='autoUpdate-text'>Автообновление</span>
+			</label>
 			
 			{
 				this.state.posts.map((post) => {

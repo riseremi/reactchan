@@ -6,7 +6,7 @@ export default class IndexView extends React.Component {
 		return <div className='post-wrapper' style={{color: '#090E00', fontFamily: 'serif', display: 'table', border: '1px solid #F9E0A8', background: 'none repeat scroll 0% 0% #FFECB2', borderRadius: '3px', marginTop: '4px', minWidth: '380px'}}>
 			<label>
 				<input type="checkbox"/>
-				<span className="postername" style={{fontFamily: 'sans-serif'}}>Аноним&nbsp;</span>
+				<span className="postername" style={{fontFamily: 'sans-serif'}}>Няноним&nbsp;</span>
 				<span className="time">xx.xx.xxx (xx) xx:xx:xx&nbsp;</span>
 			</label>
 			<span className="reflink">
@@ -15,7 +15,7 @@ export default class IndexView extends React.Component {
 			</span>
 			
 			<div className='postbody'>
-				<blockquote>{this.props.post.text}</blockquote>
+				<blockquote style={{whiteSpace: 'pre-line'}}>{this.props.post.text}</blockquote>
 			</div>
 		</div>;
 	}
