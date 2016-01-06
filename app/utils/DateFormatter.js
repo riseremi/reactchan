@@ -22,7 +22,7 @@ class DateFormatter {
 		let minutes = this._addLeadingZero(date.getMinutes());
 		let seconds = this._addLeadingZero(date.getSeconds());
 
-		return `${hours}.${minutes}.${seconds}`;
+		return `${hours}:${minutes}:${seconds}`;
 	}
 
 	_addLeadingZero(value) {
