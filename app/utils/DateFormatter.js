@@ -33,3 +33,5 @@ class DateFormatter {
 		return this._days[day] || '??';
 	}
 }
+
+module.exports = new DateFormatter();
