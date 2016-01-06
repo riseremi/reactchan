@@ -19,7 +19,7 @@ module.exports = {
 
 	insertPost: function (post, cb) {
 		var maxIndex;
-		
+
 		if(post.text.length < 1) {
 			console.log('Cannot add an empty post');
 			return;
@@ -27,7 +27,7 @@ module.exports = {
 
 		postsDB.find({}).sort({id: -1}).limit(1).exec(function (err, docs) {
 			console.log(docs);
-			maxIndex = docs[0].id;
+			maxIndex = docs[0] ? docs[0].id : 0;
 			post.id = maxIndex + 1;
 			post.timestamp = new Date().getTime();
 
