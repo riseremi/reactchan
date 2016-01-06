@@ -7,7 +7,7 @@ class DateFormatter {
 	getPostDate(timestamp) {
 		let date = new Date(timestamp);
 
-		let day = date.getDate();
+		let day = this._addLeadingZero(date.getDate());
 		let month = this._addLeadingZero(date.getMonth() + 1);
 		let year = date.getFullYear();
 		let dayName = this._getRussianDayName(date.getDay());
