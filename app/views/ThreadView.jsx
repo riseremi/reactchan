@@ -2,12 +2,17 @@
 
 import React from 'react';
 import Post from '../components/Post';
+import ReplyForm from '../components/ReplyForm';
 import request from 'superagent';
 
 export default class ThreadView extends React.Component {
 
 	constructor(props) {
 		super(props);
+
+		this.updatePosts = this.updatePosts.bind(this);
+		this.autoUpdateHandler = this.autoUpdateHandler.bind(this);
+		this.sendPostHandler = this.sendPostHandler.bind(this);
 
 		this.state = {
 			posts: [],
@@ -96,17 +101,11 @@ export default class ThreadView extends React.Component {
 	render() {
 		return <div>
 
-			<textarea id='text' cols='48' rows='4' placeholder='Your message'/>
-			<br/>
-			<button onClick={this.sendPostHandler.bind(this)}>Send</button>
-			&nbsp;
-			<button className='refresh' onClick={this.updatePosts.bind(this)}>Refresh</button>
-			&nbsp;
-
-			<label className="postername" style={{fontFamily: 'sans-serif'}}>
-				<input type="checkbox" onChange={this.autoUpdateHandler.bind(this)}/>
-				<span id='autoUpdate-text'>Автообновление</span>
-			</label>
+			<ReplyForm
+			  updateClickHandler={this.updatePosts}
+			  submitClickHandler={this.sendPostHandler}
+			  autoUpdateClickHandler={this.autoUpdateHandler}
+			/>
 
 			{
 				this.state.posts.map((post) => {
