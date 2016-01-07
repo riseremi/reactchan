@@ -4,7 +4,7 @@ import DateFormatter from '../utils/DateFormatter';
 export default class IndexView extends React.Component {
 
 	render() {
-		return <div className="post-wrapper" style={{ color: '#090E00', fontFamily: 'serif', display: 'table', border: '1px solid #F9E0A8', background: 'none repeat scroll 0% 0% #FFECB2', borderRadius: '3px', marginTop: '4px', minWidth: '380px' }}>
+		return <div className="post-wrapper" style={{ color: '#090E00', fontFamily: 'serif', display: 'table', border: '1px solid #F9E0A8', background: 'none repeat scroll 0% 0% #FFECB2', borderRadius: '3px', marginTop: '4px', minWidth: '380px', paddingRight: '3px' }}>
 			<label>
 				<input type="checkbox"/>
 				<span className="postername" style={{ fontFamily: 'sans-serif' }}>Няноним&nbsp;</span>
@@ -16,7 +16,7 @@ export default class IndexView extends React.Component {
 			</span>
 
 			<div className="postbody">
-				<blockquote style={{ whiteSpace: 'pre-line' }}>{this.props.post.text}</blockquote>
+				<blockquote style={{ whiteSpace: 'pre-wrap' }}>{this.props.post.text.replace(/&nbsp;/gm, ' ')}</blockquote>
 			</div>
 		</div>;
 	}

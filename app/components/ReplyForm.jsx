@@ -9,11 +9,14 @@ export default class ReplyForm extends React.Component {
 		let autoUpdateClickHandler = this.props.autoUpdateClickHandler;
 
 		return <div>
-			<textarea id="text" cols={48} rows={4} placeholder="Your message" />
+			<input placeholder="email" /><br />
+			<input placeholder="Тема" /><br />
+
+			<textarea id="text" cols={48} rows={4} placeholder="Сообщение" />
 			<br />
-			<button onClick={submitClickHandler}>Send</button>
+			<button onClick={submitClickHandler}>Отправить</button>
 			&nbsp;
-			<button className="refresh" onClick={updateClickHandler}>Refresh</button>
+			<button className="refresh" onClick={updateClickHandler}>Обновить</button>
 			&nbsp;
 
 			<label className="postername" style={{ fontFamily: 'sans-serif' }}>

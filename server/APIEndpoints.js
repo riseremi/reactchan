@@ -15,13 +15,22 @@ var route = function (app) {
 		// res.send('GET: ' + req.param('name'));
 	});
 
-	var postSomething = function(req, res) {
+	var postSomething = function (req, res) {
 		var postJSON = req.body;
 
 		// routes
 		// 1. NO SUBJECT = post
 		// 2. SUBJECT = thread
 		// mail - sage = <a>Anonymous</a>
+
+		if (postJSON.subject) {
+			// create thread
+			createThread(postJSON);
+		}
+		else {
+			// create post
+			createPost(postJSON);
+		}
 
 	};
 	app.post('/board', postSomething);
@@ -54,8 +63,29 @@ var route = function (app) {
 	app.put('/api', function (req, res) {
 		res.send('PUT');
 	});
+};
 
+// operations
+function createThread(postJSON) {
+	// create thread + OP post
+
+	var thread = {
+		id: N,
+		board_id: postJSON.board_id,
+		name: postJSON.subject
+	};
+
+	nedb.insertThread(thread, function () {});
 }
 
+function createPost(postJSON) {
+	// create post
+	if (postJSON.email === 'sage') {
+		// create sage post
+	}
+	else {
+		// create normal post
+	}
+}
 
 module.exports = APIEndpoints;
