@@ -18,7 +18,13 @@ export default class ThreadView extends React.Component {
 	}
 
 	componentDidMount() {
+		this.setState({boardCode: this.props.params.boardCode});
 		this.updateBoardHandler();
+	}
+
+	componentWillReceiveProps(nextProps) {
+		this.setState({boardCode: nextProps.params.boardCode});
+		this.updateBoardHandler(nextProps.params.boardCode);
 	}
 
 	sendPostHandler() {
@@ -40,18 +46,15 @@ export default class ThreadView extends React.Component {
 		request.post('http://chan-riseremi.c9users.io/board').send(data).end(callback);
 	}
 
-	updateBoardHandler() {
+	updateBoardHandler(boardCode) {
 		let callback = (err, res) => {
 			this.setState({
 				threads: res.body
 			});
-			// humane.log('Board updated', {
-			// 	timeout: 1000
-			// });
 			console.log('[AJAX] - get threads, response body:', res.body);
 		};
 
-		request('GET', 'http://chan-riseremi.c9users.io/board/' + this.state.boardCode).end(callback);
+		request('GET', 'http://chan-riseremi.c9users.io/board/' + (boardCode || this.state.boardCode)).end(callback);
 	}
 
 	render() {
