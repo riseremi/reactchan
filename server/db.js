@@ -30,6 +30,7 @@ module.exports = {
 			maxIndex = docs[0] ? docs[0].id : 0;
 			post.id = maxIndex + 1;
 			post.timestamp = new Date().getTime();
+			post.text = post.text.trim();
 
 			postsDB.insert(post, function (err, newDoc) { // Callback is optional
 				// newDoc is the newly inserted document, including its _id

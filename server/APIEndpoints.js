@@ -1,4 +1,5 @@
 var nedb = require('./db.js');
+var NCT = require('./NCT');
 
 var APIEndpoints = {
 	use: function (app) {
@@ -14,6 +15,17 @@ var route = function (app) {
 		// res.send('GET: ' + req.param('name'));
 	});
 
+	var postSomething = function(req, res) {
+		var postJSON = req.body;
+
+		// routes
+		// 1. NO SUBJECT = post
+		// 2. SUBJECT = thread
+		// mail - sage = <a>Anonymous</a>
+
+	};
+	app.post('/board', postSomething);
+
 	app.get('/posts', function (req, res) {
 		res.get('Content-Type') || res.set('Content-Type', 'application/json');
 		nedb.findAllPosts(function (posts) {
@@ -27,6 +39,9 @@ var route = function (app) {
 
 	app.post('/posts', function (req, res) {
 		var post = req.body;
+
+		// ;)
+		post.text = NCT(post.text);
 
 		nedb.insertPost(post, function () {
 			res.json({
