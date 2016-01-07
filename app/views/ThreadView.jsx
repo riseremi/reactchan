@@ -114,7 +114,6 @@ export default class ThreadView extends React.Component {
 	}
 
 	render() {
-		console.warn(this.state.posts);
 		return <div>
 
 			<ReplyForm

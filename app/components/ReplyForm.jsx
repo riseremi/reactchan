@@ -10,10 +10,10 @@ export default class ReplyForm extends React.Component {
 		let showAutoUpdate = this.props.showAutoUpdate;
 
 		return <div>
-			<input id="email" placeholder="email" value='nöko' disabled/><br />
-			<input id="subject" placeholder="Тема" /><br />
+			<input className='reply-form__input' id="email" placeholder="email" value='nöko' disabled/><br />
+			<input className='reply-form__input' id="subject" placeholder="Тема" /><br />
 
-			<textarea id="text" cols={48} rows={4} placeholder="Сообщение" />
+			<textarea className='reply-form__textarea' id="text" rows={4} placeholder="Сообщение" />
 			<br />
 			<button onClick={submitClickHandler}>Отправить</button>
 			&nbsp;

@@ -52,6 +52,9 @@ module.exports = {
 		post.text = post.text.trim();
 
 		postsDB.insert(post, function (err, newPost) {
+			threadsDB.update({id: post.threadId}, {$inc: {postsCount: 1}}, {}, function(err, docs) {
+
+			});
 			cb();
 		});
 	},
@@ -87,7 +90,6 @@ module.exports = {
 
 	findPostsByThreadId: function (threadId, cb) {
 		postsDB.find({threadId: threadId}).sort({id: -1}).exec(function (err, docs) {
-			console.log('[DATABASE] - found posts: ' + JSON.stringify(docs));
 			cb(docs);
 		});
 	},
