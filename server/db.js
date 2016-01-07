@@ -10,7 +10,8 @@ var threadsDB = new Datastore({
 	autoload: true
 });
 
-var maxPostIndex = -1, maxThreadIndex = -1, MAX_BUMP_COUNT = 100;
+var maxPostIndex = -1, maxThreadIndex = -1, MAX_BUMP_COUNT = 100, MAX_THREADS = 10,
+	AUTO_CLEANUP_TIMEOUT = 60 * 1000;
 
 module.exports = {
 
@@ -34,6 +35,10 @@ module.exports = {
 			console.log(docs);
 			maxThreadIndex = docs[0] ? docs[0].id : 0;
 		});
+
+		// set auto cleanup
+
+		setInterval(() => { this.removeOldThreads(); }, AUTO_CLEANUP_TIMEOUT);
 	},
 
 	insertPost: function (post, cb) {
@@ -119,6 +124,20 @@ module.exports = {
 	findSinglePost: function (threadId, cb) {
 		postsDB.findOne({threadId: threadId}, {_id: 0}).sort({id: 1}).exec(function(err, post) {
 			cb(post);
+		});
+	},
+
+	removeOldThreads: function() {
+		console.log('Removing old threads...');
+		threadsDB.find({}).sort({updatedAt: -1}).skip(MAX_THREADS).exec(function(err, threads) {
+			threads.map((thread) => {
+				threadsDB.remove({id: thread.id}, {multi: true}, function(err, numRemoved) {
+					console.log('Removed', numRemoved, 'threads.');
+				});
+				postsDB.remove({threadId: thread.id}, {multi: true}, function(err, numRemoved) {
+					console.log('Removed', numRemoved, 'posts.');
+				});
+			});
 		});
 	}
 
