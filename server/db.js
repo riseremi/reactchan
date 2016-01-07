@@ -10,18 +10,18 @@ var threadsDB = new Datastore({
 	autoload: true
 });
 
-var maxPostIndex = -1, maxThreadIndex = -1, MAX_BUMP_COUNT = 100, MAX_THREADS = 10,
-	AUTO_CLEANUP_TIMEOUT = 60 * 1000;
+var maxPostIndex = -1, maxThreadIndex = -1, MAX_BUMP_COUNT = 100, MAX_THREADS = 15,
+	AUTO_CLEANUP_TIMEOUT = 15 * 60 * 1000;
 
 module.exports = {
 
 	init: function () {
 		// 3 hour * 60 mins * 60 secs * 1000 ms
-		postsDB.persistence.setAutocompactionInterval(3 * 60 * 60 * 1000);
+		postsDB.persistence.setAutocompactionInterval(1 * 60 * 60 * 1000);
 		postsDB.ensureIndex({ fieldName: 'id' , unique: true}, function (err) {});
 
 		// repeat
-		threadsDB.persistence.setAutocompactionInterval(3 * 60 * 60 * 1000);
+		threadsDB.persistence.setAutocompactionInterval(1 * 60 * 60 * 1000);
 		threadsDB.ensureIndex({ fieldName: 'id' , unique: true}, function (err) {});
 
 		// set max post index
@@ -56,8 +56,16 @@ module.exports = {
 		post.timestamp = post.timestamp || new Date().getTime();
 		post.text = post.text.trim();
 		var sage = post.email === 'sage';
+		if (post.firstPost) {
+			post.email = 'nöko';
+			sage = false;
+		}
 
 		threadsDB.findOne({id: post.threadId}, function(err, doc) {
+			if (!doc) {
+				console.log('DEAD THREAD');
+				return;
+			}
 			var update = sage
 			  ? {$inc: {postsCount: 1}}
 			  : doc.bumpsCount < MAX_BUMP_COUNT
@@ -90,6 +98,7 @@ module.exports = {
 
 		threadsDB.insert(thread, function (err, newThread) {
 			post.threadId = newThread.id;
+			post.firstPost = true;
 			_self.insertPost(post, function() {
 				cb();
 			});
