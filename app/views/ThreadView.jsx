@@ -18,7 +18,9 @@ export default class ThreadView extends React.Component {
 			posts: [],
 			timer: {},
 			counter: {},
-			timeOut: 10
+			timeOut: 10,
+			boardCode: this.props.params.boardCode,
+			threadId: this.props.params.threadId
 		};
 	}
 
@@ -39,18 +41,22 @@ export default class ThreadView extends React.Component {
 			this.setState({
 				posts: res.body
 			});
-			humane.log('Updated', {
+			humane.log('Thread updated', {
 				timeout: 1000
 			});
 			console.log('[AJAX] - get posts, response body:', res.body);
 		};
 
-		request('GET', 'http://chan-riseremi.c9users.io/posts').end(callback);
+		request('GET', 'http://chan-riseremi.c9users.io/posts/' + this.state.threadId).end(callback);
 	}
 
 	sendPostHandler() {
 		let data = {
-			text: document.getElementById('text').value
+			text: document.getElementById('text').value,
+			boardCode: this.state.boardCode,
+			threadId: +this.state.threadId,
+			subject: document.getElementById('subject').value,
+			email: document.getElementById('email').value
 		};
 
 		let callback = (err, res) => {
@@ -59,13 +65,22 @@ export default class ThreadView extends React.Component {
 			document.getElementById('text').value = '';
 		};
 
-		request.post('http://chan-riseremi.c9users.io/posts').send(data).end(callback);
+		// route ebin 8------------D
+		var requestURL = 'http://chan-riseremi.c9users.io';
+
+		// send post
+		if (data.subject.length < 1) {
+			requestURL = requestURL + '/posts';
+		} else {
+			requestURL = requestURL + '/board';
+		}
+
+		request.post(requestURL).send(data).end(callback);
 	}
 
 	autoUpdateHandler(event) {
 		let autoUpdate = event.target.checked;
 		const TIMEOUT = 10000;
-
 
 		if (autoUpdate) {
 			let timer = setInterval(() => {
@@ -99,12 +114,14 @@ export default class ThreadView extends React.Component {
 	}
 
 	render() {
+		console.warn(this.state.posts);
 		return <div>
 
 			<ReplyForm
 			  updateClickHandler={this.updatePosts}
 			  submitClickHandler={this.sendPostHandler}
 			  autoUpdateClickHandler={this.autoUpdateHandler}
+			  showAutoUpdate
 			/>
 
 			{

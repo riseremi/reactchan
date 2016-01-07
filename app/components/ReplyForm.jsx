@@ -7,10 +7,11 @@ export default class ReplyForm extends React.Component {
 		let updateClickHandler = this.props.updateClickHandler;
 		let submitClickHandler = this.props.submitClickHandler;
 		let autoUpdateClickHandler = this.props.autoUpdateClickHandler;
+		let showAutoUpdate = this.props.showAutoUpdate;
 
 		return <div>
-			<input placeholder="email" /><br />
-			<input placeholder="Тема" /><br />
+			<input id="email" placeholder="email" value='nöko' disabled/><br />
+			<input id="subject" placeholder="Тема" /><br />
 
 			<textarea id="text" cols={48} rows={4} placeholder="Сообщение" />
 			<br />
@@ -19,10 +20,13 @@ export default class ReplyForm extends React.Component {
 			<button className="refresh" onClick={updateClickHandler}>Обновить</button>
 			&nbsp;
 
-			<label className="postername" style={{ fontFamily: 'sans-serif' }}>
-				<input type="checkbox" onChange={autoUpdateClickHandler} />
-				<span id="autoUpdate-text">Автообновление</span>
-			</label>
+			{ showAutoUpdate ?
+				<label className="postername" style={{ fontFamily: 'sans-serif' }}>
+					<input type="checkbox" onChange={autoUpdateClickHandler} />
+					<span id="autoUpdate-text">Автообновление</span>
+				</label>
+				: null
+			}
 		</div>;
 	}
 

@@ -57,6 +57,8 @@ module.exports = {
 	},
 
 	insertThread: function (thread, post, cb) {
+		var _self = this;
+
 		if (thread.subject.length < 1) {
 			console.error('[ERROR]: Subject is empty');
 		}
@@ -71,12 +73,27 @@ module.exports = {
 
 		threadsDB.insert(thread, function (err, newThread) {
 			post.threadId = newThread.id;
-			this.insertPost(post, function() {});
+			_self.insertPost(post, function() {
+				cb();
+			});
 		});
 	},
 
 	findAllPosts: function (cb) {
 		postsDB.find({}).sort({id: -1}).exec(function (err, docs) {
+			cb(docs);
+		});
+	},
+
+	findPostsByThreadId: function (threadId, cb) {
+		postsDB.find({threadId: threadId}).sort({id: -1}).exec(function (err, docs) {
+			console.log('[DATABASE] - found posts: ' + JSON.stringify(docs));
+			cb(docs);
+		});
+	},
+
+	findThreadsByBoardCore: function (boardCode, cb) {
+		threadsDB.find({boardCode: boardCode}).sort({id: -1}).exec(function (err, docs) {
 			cb(docs);
 		});
 	}

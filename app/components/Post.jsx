@@ -1,7 +1,7 @@
 import React from 'react';
 import DateFormatter from '../utils/DateFormatter';
 
-export default class IndexView extends React.Component {
+export default class Post extends React.Component {
 
 	render() {
 		return <div className="post-wrapper" style={{ color: '#090E00', fontFamily: 'serif', display: 'table', border: '1px solid #F9E0A8', background: 'none repeat scroll 0% 0% #FFECB2', borderRadius: '3px', marginTop: '4px', minWidth: '380px', paddingRight: '3px' }}>

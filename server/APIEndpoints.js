@@ -15,6 +15,7 @@ var route = function (app) {
 		// res.send('GET: ' + req.param('name'));
 	});
 
+	// submit post or thread
 	var postSomething = function (req, res) {
 		var postJSON = req.body;
 
@@ -25,19 +26,37 @@ var route = function (app) {
 
 		if (postJSON.subject) {
 			// create thread
-			createThread(postJSON);
+			createThread(postJSON, function () {
+				res.json({
+					status: 'success'
+				});
+			});
 		}
 		else {
 			// create post
 			createPost(postJSON);
 		}
-
 	};
 	app.post('/board', postSomething);
 
-	app.get('/posts', function (req, res) {
+
+
+	// load thread list
+	var getThreadList = function (req, res) {
+		var boardCode = req.params.boardCode;
+
 		res.get('Content-Type') || res.set('Content-Type', 'application/json');
-		nedb.findAllPosts(function (posts) {
+		nedb.findThreadsByBoardCore(boardCode, function (threads) {
+			res.json(threads);
+		});
+	};
+	app.get('/board/:boardCode', getThreadList);
+
+	app.get('/posts/:threadId', function (req, res) {
+		var threadId = +req.params.threadId;
+
+		res.get('Content-Type') || res.set('Content-Type', 'application/json');
+		nedb.findPostsByThreadId(threadId, function (posts) {
 			res.json(posts);
 		});
 	});
@@ -66,15 +85,15 @@ var route = function (app) {
 };
 
 // operations
-function createThread(post) {
+function createThread(post, cb) {
 	// create thread + OP post
 
 	var thread = {
 		boardCode: post.boardCode,
-		name: post.subject
+		subject: post.subject
 	};
 
-	nedb.insertThread(thread, post);
+	nedb.insertThread(thread, post, cb);
 }
 
 function createPost(postJSON) {
