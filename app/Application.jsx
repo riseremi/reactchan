@@ -12,10 +12,10 @@ import IndexView from './views/IndexView';
 render((
 	<Router history={history}>
 		<Route path='/' component={Layout}>
-			<IndexRoute component={IndexView}/>
-			<Route path='/b/:thread_id' component={ThreadView}/>
-			<Route path='/dev/res/:thread_id' component={ThreadView}/>
-			<Route path='*' component={Page404View}/>
+			<IndexRoute component={IndexView} />
+			<Route path='/b/:thread_id' component={ThreadView} />
+			<Route path='/dev/res/:thread_id' component={ThreadView} />
+			<Route path='*' component={Page404View} />
 		</Route>
 	</Router>
 ), document.getElementById('app-mount'));

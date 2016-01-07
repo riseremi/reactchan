@@ -109,7 +109,7 @@ export default class ThreadView extends React.Component {
 
 			{
 				this.state.posts.map((post) => {
-					return <Post key={post.id} post={post}/>;
+					return <Post key={post.id} post={post} />;
 				})
 			}
 
