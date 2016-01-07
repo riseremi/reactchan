@@ -1,3 +1,5 @@
+'use strict';
+
 var nedb = require('./db.js');
 var NCT = require('./NCT');
 var BOARDS = ['dev', 'beta'];
@@ -86,6 +88,7 @@ function createThread(post, cb) {
 	// create thread + OP post
 
 	if (!isBoardExists(post.boardCode)) {
+		console.log('Requested board does not exist.');
 		return;
 	}
 
@@ -100,13 +103,13 @@ function createThread(post, cb) {
 
 
 function isBoardExists(boardCode) {
+	let boardExist = false;
 	BOARDS.map((board) => {
-		if (boardCode !== board) {
-			console.log('Requested board doesn\'t exist.');
-			return false;
+		if (boardCode === board && !boardExist) {
+			boardExist = true;
 		}
-		return true
 	});
+	return boardExist;
 }
 
 function createPost(postJSON) {

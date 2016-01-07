@@ -10,8 +10,8 @@ var threadsDB = new Datastore({
 	autoload: true
 });
 
-var maxPostIndex = -1, maxThreadIndex = -1, MAX_BUMP_COUNT = 100, MAX_THREADS = 15,
-	AUTO_CLEANUP_TIMEOUT = 15 * 60 * 1000;
+var maxPostIndex = -1, maxThreadIndex = -1, MAX_BUMP_COUNT = 5, MAX_THREADS = 3,
+	AUTO_CLEANUP_TIMEOUT = 0.5 * 60 * 1000;
 
 module.exports = {
 
