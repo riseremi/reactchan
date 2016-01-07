@@ -15,7 +15,6 @@ var maxPostIndex = -1, maxThreadIndex = -1;
 module.exports = {
 
 	init: function () {
-
 		// 3 hour * 60 mins * 60 secs * 1000 ms
 		postsDB.persistence.setAutocompactionInterval(3 * 60 * 60 * 1000);
 		postsDB.ensureIndex({ fieldName: 'id' , unique: true}, function (err) {});
@@ -38,13 +37,12 @@ module.exports = {
 	},
 
 	insertPost: function (post, cb) {
-
 		if(post.text.length < 1) {
 			console.error('[ERROR]: Cannot add an empty post');
 			return;
 		}
 
-		if (maxPostIndex === -1) {
+		if (maxPostIndex < 0) {
 			console.error('[ERROR]: Negative max post id.');
 			return;
 		}
@@ -53,15 +51,32 @@ module.exports = {
 		post.timestamp = new Date().getTime();
 		post.text = post.text.trim();
 
-		postsDB.insert(post, function (err, newDoc) { // Callback is optional
+		postsDB.insert(post, function (err, newPost) {
 			cb();
 		});
 	},
 
+	insertThread: function (thread, post, cb) {
+		if (thread.subject.length < 1) {
+			console.error('[ERROR]: Subject is empty');
+		}
+
+		if (maxThreadIndex < 0) {
+			console.error('[ERROR]: Negative max thread id.');
+			return;
+		}
+
+		thread.id = ++maxThreadIndex;
+		thread.postsCount = 1;
+
+		threadsDB.insert(thread, function (err, newThread) {
+			post.threadId = newThread.id;
+			this.insertPost(post, function() {});
+		});
+	},
+
 	findAllPosts: function (cb) {
-		postsDB.find({}).sort({
-			id: -1
-		}).exec(function (err, docs) {
+		postsDB.find({}).sort({id: -1}).exec(function (err, docs) {
 			cb(docs);
 		});
 	}

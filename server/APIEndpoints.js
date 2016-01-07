@@ -66,16 +66,15 @@ var route = function (app) {
 };
 
 // operations
-function createThread(postJSON) {
+function createThread(post) {
 	// create thread + OP post
 
 	var thread = {
-		id: N,
-		board_id: postJSON.board_id,
-		name: postJSON.subject
+		boardCode: post.boardCode,
+		name: post.subject
 	};
 
-	nedb.insertThread(thread, function () {});
+	nedb.insertThread(thread, post);
 }
 
 function createPost(postJSON) {
