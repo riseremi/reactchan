@@ -63,6 +63,8 @@ export default class ThreadView extends React.Component {
 			console.log('posting:', data);
 			this.updatePosts();
 			document.getElementById('text').value = '';
+			document.getElementById('subject').value = '';
+			document.getElementById('email').value = 'nöko';
 		};
 
 		// route ebin 8------------D
