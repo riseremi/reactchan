@@ -48,13 +48,14 @@ module.exports = {
 		}
 
 		post.id = ++maxPostIndex;
-		post.timestamp = new Date().getTime();
+		post.timestamp = post.timestamp || new Date().getTime();
 		post.text = post.text.trim();
+		var sage = post.email === 'sage';
+
+		var update = sage ? {$inc: {postsCount: 1}} : {$inc: {postsCount: 1}, $set: {updatedAt: post.timestamp}};
 
 		postsDB.insert(post, function (err, newPost) {
-			threadsDB.update({id: post.threadId}, {$inc: {postsCount: 1}}, {}, function(err, docs) {
-
-			});
+			threadsDB.update({id: post.threadId}, update, {});
 			cb();
 		});
 	},
@@ -96,7 +97,7 @@ module.exports = {
 	},
 
 	findThreadsByBoardCode: function (boardCode, cb) {
-		threadsDB.find({boardCode: boardCode}, {_id: 0}).sort({id: -1}).exec(function (err, docs) {
+		threadsDB.find({boardCode: boardCode}, {_id: 0, updatedAt: 0}).sort({updatedAt: -1}).exec(function (err, docs) {
 			cb(docs);
 		});
 	},

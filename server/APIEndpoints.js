@@ -18,11 +18,7 @@ var route = function (app) {
 	// submit post or thread
 	var postSomething = function (req, res) {
 		var postJSON = req.body;
-
-		// routes
-		// 1. NO SUBJECT = post
-		// 2. SUBJECT = thread
-		// mail - sage = <a>Anonymous</a>
+		postJSON.timestamp = new Date().getTime();
 
 		if (postJSON.subject) {
 			// create thread
@@ -33,8 +29,8 @@ var route = function (app) {
 			});
 		}
 		else {
-			// create post
-			createPost(postJSON);
+			// TODO create post
+			// createPost(postJSON);
 		}
 	};
 	app.post('/board', postSomething);
@@ -90,7 +86,8 @@ function createThread(post, cb) {
 
 	var thread = {
 		boardCode: post.boardCode,
-		subject: post.subject
+		subject: post.subject,
+		updatedAt: post.timestamp
 	};
 
 	nedb.insertThread(thread, post, cb);
