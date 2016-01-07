@@ -1,5 +1,6 @@
 var nedb = require('./db.js');
 var NCT = require('./NCT');
+var BOARDS = ['dev', 'beta'];
 
 var APIEndpoints = {
 	use: function (app) {
@@ -84,6 +85,10 @@ var route = function (app) {
 function createThread(post, cb) {
 	// create thread + OP post
 
+	if (!isBoardExists(post.boardCode)) {
+		return;
+	}
+
 	var thread = {
 		boardCode: post.boardCode,
 		subject: post.subject,
@@ -91,6 +96,17 @@ function createThread(post, cb) {
 	};
 
 	nedb.insertThread(thread, post, cb);
+}
+
+
+function isBoardExists(boardCode) {
+	BOARDS.map((board) => {
+		if (boardCode !== board) {
+			console.log('Requested board doesn\'t exist.');
+			return false;
+		}
+		return true
+	});
 }
 
 function createPost(postJSON) {
@@ -102,5 +118,7 @@ function createPost(postJSON) {
 		// create normal post
 	}
 }
+
+
 
 module.exports = APIEndpoints;
