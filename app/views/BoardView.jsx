@@ -43,9 +43,9 @@ export default class ThreadView extends React.Component {
 			this.setState({
 				threads: res.body
 			});
-			humane.log('Board updated', {
-				timeout: 1000
-			});
+			// humane.log('Board updated', {
+			// 	timeout: 1000
+			// });
 			console.log('[AJAX] - get threads, response body:', res.body);
 		};
 

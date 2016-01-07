@@ -46,7 +46,7 @@ var route = function (app) {
 		var boardCode = req.params.boardCode;
 
 		res.get('Content-Type') || res.set('Content-Type', 'application/json');
-		nedb.findThreadsByBoardCore(boardCode, function (threads) {
+		nedb.findThreadsByBoardCode(boardCode, function (threads) {
 			res.json(threads);
 		});
 	};

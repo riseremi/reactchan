@@ -72,7 +72,8 @@ module.exports = {
 		}
 
 		thread.id = ++maxThreadIndex;
-		thread.postsCount = 1;
+		thread.postsCount = 0;
+		thread.firstPostText = post.text.substr(0, 220) + '...';
 
 		threadsDB.insert(thread, function (err, newThread) {
 			post.threadId = newThread.id;
@@ -94,9 +95,23 @@ module.exports = {
 		});
 	},
 
-	findThreadsByBoardCore: function (boardCode, cb) {
-		threadsDB.find({boardCode: boardCode}).sort({id: -1}).exec(function (err, docs) {
+	findThreadsByBoardCode: function (boardCode, cb) {
+		threadsDB.find({boardCode: boardCode}, {_id: 0}).sort({id: -1}).exec(function (err, docs) {
 			cb(docs);
+		});
+	},
+
+
+	findThreadsWithFirstPostPreview: function (boardCode, cb) {
+		// find all threads
+		threadsDB.find({boardCode: boardCode}, {_id: 0}).sort({id: -1}).exec(function(err, threads) {
+			cb(threads);
+		});
+	},
+
+	findSinglePost: function (threadId, cb) {
+		postsDB.findOne({threadId: threadId}, {_id: 0}).sort({id: 1}).exec(function(err, post) {
+			cb(post);
 		});
 	}
 
