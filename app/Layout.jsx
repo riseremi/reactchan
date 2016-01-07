@@ -6,7 +6,7 @@ export default class Layout extends React.Component {
 	render() {
 		return (
 			<div>
-				<h1>reactchan</h1>
+				<h1>reactchan :3</h1>
 				<div>{this.props.children}</div>
 			</div>
 		);
