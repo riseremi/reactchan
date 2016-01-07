@@ -10,7 +10,7 @@ var threadsDB = new Datastore({
 	autoload: true
 });
 
-var maxPostIndex = -1, maxThreadIndex = -1;
+var maxPostIndex = -1, maxThreadIndex = -1, MAX_BUMP_COUNT = 100;
 
 module.exports = {
 
@@ -52,11 +52,17 @@ module.exports = {
 		post.text = post.text.trim();
 		var sage = post.email === 'sage';
 
-		var update = sage ? {$inc: {postsCount: 1}} : {$inc: {postsCount: 1}, $set: {updatedAt: post.timestamp}};
+		threadsDB.findOne({id: post.threadId}, function(err, doc) {
+			var update = sage
+			  ? {$inc: {postsCount: 1}}
+			  : doc.bumpsCount < MAX_BUMP_COUNT
+			    ? {$inc: {postsCount: 1, bumpsCount: 1}, $set: {updatedAt: post.timestamp}}
+			    : {$inc: {postsCount: 1}};
 
-		postsDB.insert(post, function (err, newPost) {
-			threadsDB.update({id: post.threadId}, update, {});
-			cb();
+			postsDB.insert(post, function (err, newPost) {
+				threadsDB.update({id: post.threadId}, update, {});
+				cb();
+			});
 		});
 	},
 
@@ -74,6 +80,7 @@ module.exports = {
 
 		thread.id = ++maxThreadIndex;
 		thread.postsCount = 0;
+		thread.bumpsCount = 0;
 		thread.firstPostText = post.text.substr(0, 220) + '...';
 
 		threadsDB.insert(thread, function (err, newThread) {
@@ -101,7 +108,6 @@ module.exports = {
 			cb(docs);
 		});
 	},
-
 
 	findThreadsWithFirstPostPreview: function (boardCode, cb) {
 		// find all threads
