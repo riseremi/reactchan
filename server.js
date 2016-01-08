@@ -6,6 +6,8 @@ var bodyParser = require('body-parser');
 var APIEndpoints = require('./server/APIEndpoints');
 var nedb = require('./server/db.js');
 
+var SITE_URL = 'http://chan-riseremi.c9users.io/';
+
 // enable gzip compression
 app.use(compress());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -14,6 +16,10 @@ app.use(favicon(__dirname + '/dist/favicon.ico'));
 
 // write request method and URI in the console
 app.use(function(req, res, next) {
+	// oh yeah, let's do that
+	if (!req.headers['referer']) {
+		return;
+	}
 	console.log('%s: %s', req.method, req.url);
 	next();
 });
