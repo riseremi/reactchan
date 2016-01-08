@@ -5,6 +5,7 @@ export default class Post extends React.Component {
 
 	render() {
 		let sage = this.props.post.email === 'sage';
+		let name = this.props.post.name || 'Аноним';
 
 		return <div className="post-wrapper" style={{ color: '#090E00', fontFamily: 'serif', display: 'table', border: '1px solid #F9E0A8', background: 'none repeat scroll 0% 0% #FFECB2', borderRadius: '3px', marginTop: '4px', minWidth: '380px', paddingRight: '3px' }}>
 			<label>
@@ -12,8 +13,8 @@ export default class Post extends React.Component {
 				<span className="postername" style={{ fontFamily: 'sans-serif' }}>
 					<span style={sage ? { color: 'red', fontWeight: 'bold' } : {} }>
 						{ this.props.post.email !== '' && this.props.post.email !== 'nöko' && this.props.post.email !== 'sage'
-						  ? <a href={'mailto:' + this.props.post.email}>Аноним&nbsp;</a>
-						  : <span>Аноним&nbsp;</span>
+						  ? <a href={'mailto:' + this.props.post.email}>{name}&nbsp;</a>
+						  : <span>{name}&nbsp;</span>
 						}
 					</span>
 				</span>

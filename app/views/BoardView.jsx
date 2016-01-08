@@ -36,7 +36,8 @@ export default class ThreadView extends React.Component {
 			text: document.getElementById('text').value,
 			boardCode: this.state.boardCode,
 			subject: document.getElementById('subject').value,
-			email: document.getElementById('email').value
+			email: document.getElementById('email').value,
+			name: document.getElementById('name').value
 		};
 
 		let callback = (err, res) => {
@@ -44,6 +45,7 @@ export default class ThreadView extends React.Component {
 			document.getElementById('text').value = '';
 			document.getElementById('subject').value = '';
 			document.getElementById('email').value = '';
+			document.getElementById('name').value = '';
 			this.updateBoardHandler();
 		};
 
