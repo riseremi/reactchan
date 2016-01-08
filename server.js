@@ -16,10 +16,6 @@ app.use(favicon(__dirname + '/dist/favicon.ico'));
 
 // write request method and URI in the console
 app.use(function(req, res, next) {
-	// oh yeah, let's do that
-	if (!req.headers['referer']) {
-		return;
-	}
 	console.log('%s: %s', req.method, req.url);
 	next();
 });

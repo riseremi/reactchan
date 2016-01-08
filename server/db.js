@@ -58,7 +58,6 @@ module.exports = {
 			return;
 		}
 
-		post.id = ++maxPostIndex;
 		post.timestamp = post.timestamp || new Date().getTime();
 		post.text = post.text.trim();
 		var sage = post.email === 'sage';
@@ -135,6 +134,9 @@ module.exports = {
 		thread.postsCount = 0;
 		thread.bumpsCount = 0;
 		thread.firstPostText = post.text.substr(0, 220) + (post.text.length > 220 ? '...' : '');
+
+		post.id = ++maxPostIndex;
+		thread.firstPostId = post.id;
 
 		threadsDB.insert(thread, function (err, newThread) {
 			post.threadId = newThread.id;

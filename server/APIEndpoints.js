@@ -20,6 +20,11 @@ var route = function (app) {
 
 	// submit post or thread
 	var postSomething = function (req, res) {
+		// oh yeah, let's do that
+		if (!req.headers['referer']) {
+			return;
+		}
+
 		var postJSON = req.body;
 		postJSON.timestamp = new Date().getTime();
 
@@ -65,6 +70,10 @@ var route = function (app) {
 	});
 
 	app.post('/posts', function (req, res) {
+		// one more time
+		if (!req.headers['referer']) {
+			return;
+		}
 		var post = req.body;
 
 		// ;)
