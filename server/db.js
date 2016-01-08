@@ -94,7 +94,7 @@ module.exports = {
 		thread.id = ++maxThreadIndex;
 		thread.postsCount = 0;
 		thread.bumpsCount = 0;
-		thread.firstPostText = post.text.substr(0, 220) + '...';
+		thread.firstPostText = post.text.substr(0, 220) + (post.text.length > 220 ? '...' : '');
 
 		threadsDB.insert(thread, function (err, newThread) {
 			post.threadId = newThread.id;

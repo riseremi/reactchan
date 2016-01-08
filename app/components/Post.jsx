@@ -10,7 +10,12 @@ export default class Post extends React.Component {
 			<label>
 				<input type="checkbox"/>
 				<span className="postername" style={{ fontFamily: 'sans-serif' }}>
-					<span style={sage ? { color: 'red', fontWeight: 'bold' } : {} }>Аноним&nbsp;</span>
+					<span style={sage ? { color: 'red', fontWeight: 'bold' } : {} }>
+						{ this.props.post.email !== '' && this.props.post.email !== 'nöko' && this.props.post.email !== 'sage'
+						  ? <a href={'mailto:' + this.props.post.email}>Аноним&nbsp;</a>
+						  : <span>Аноним&nbsp;</span>
+						}
+					</span>
 				</span>
 				<span className="time">{DateFormatter.getPostDate(this.props.post.timestamp)} {DateFormatter.getPostTime(this.props.post.timestamp)}&nbsp;</span>
 			</label>

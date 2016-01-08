@@ -7,7 +7,7 @@ export default class Thread extends React.Component {
 		const thread = this.props.thread;
 
 		return <div style={{ lineHeight: 1.4, fontFamily: 'serif', marginBottom: 30 }}>
-			<Link to={`/${thread.boardCode}/${thread.id}`}>{thread.subject}</Link> [{thread.postsCount} / {thread.bumpsCount}] <a href="#">{">>"}</a>
+			<Link to={`/${thread.boardCode}/${thread.id}`}>{thread.subject}</Link> [постов: {thread.postsCount} / бампов: {thread.bumpsCount}]
 			<br />
 			{thread.firstPostText}
 		</div>;

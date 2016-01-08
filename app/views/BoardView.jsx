@@ -25,6 +25,10 @@ export default class ThreadView extends React.Component {
 	componentWillReceiveProps(nextProps) {
 		this.setState({boardCode: nextProps.params.boardCode});
 		this.updateBoardHandler(nextProps.params.boardCode);
+
+		console.log(nextProps);
+		console.log(nextProps.params);
+		console.log(nextProps.params.boardCode);
 	}
 
 	sendPostHandler() {
@@ -39,7 +43,7 @@ export default class ThreadView extends React.Component {
 			console.log('posting:', data);
 			document.getElementById('text').value = '';
 			document.getElementById('subject').value = '';
-			document.getElementById('email').value = 'nöko';
+			document.getElementById('email').value = '';
 			this.updateBoardHandler();
 		};
 
@@ -52,6 +56,7 @@ export default class ThreadView extends React.Component {
 				threads: res.body
 			});
 			console.log('[AJAX] - get threads, response body:', res.body);
+			console.log(boardCode, this.state.boardCode);
 		};
 
 		request('GET', 'http://chan-riseremi.c9users.io/board/' + (boardCode || this.state.boardCode)).end(callback);
