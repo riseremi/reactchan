@@ -11,7 +11,8 @@ var threadsDB = new Datastore({
 });
 
 var maxPostIndex = -1, maxThreadIndex = -1, MAX_BUMP_COUNT = 5, MAX_THREADS = 3,
-	AUTO_CLEANUP_TIMEOUT = 0.5 * 60 * 1000;
+	AUTO_CLEANUP_TIMEOUT = 0.1 * 60 * 1000;
+var BOARDS = ['dev', 'beta'];
 
 module.exports = {
 
@@ -44,6 +45,11 @@ module.exports = {
 	insertPost: function (post, cb) {
 		if(post.text.length < 1) {
 			console.error('[ERROR]: Cannot add an empty post');
+			return;
+		}
+
+		if(post.text.length > 2000) {
+			console.error('[ERROR]: Post body is too long');
 			return;
 		}
 
@@ -84,10 +90,44 @@ module.exports = {
 
 		if (thread.subject.length < 1) {
 			console.error('[ERROR]: Subject is empty');
+			return;
+		}
+
+		if (thread.subject.length > 350) {
+			console.error('[ERROR]: Subject is too long.');
+			return;
 		}
 
 		if (maxThreadIndex < 0) {
 			console.error('[ERROR]: Negative max thread id.');
+			return;
+		}
+
+
+		// post check COPYPASTE LOL KEK AHAH
+		if(post.text.length < 1) {
+			console.error('[ERROR]: Cannot add an empty post');
+			return;
+		}
+
+		if(post.text.length > 2000) {
+			console.error('[ERROR]: Post body is too long');
+			return;
+		}
+
+		if (maxPostIndex < 0) {
+			console.error('[ERROR]: Negative max post id.');
+			return;
+		}
+
+		if (post.name.length > 64) {
+			console.error('[ERROR]: Name is too long.');
+			return;
+		}
+
+
+		if (post.email.length > 64) {
+			console.error('[ERROR]: Email is too long.');
 			return;
 		}
 
@@ -138,16 +178,21 @@ module.exports = {
 
 	removeOldThreads: function() {
 		console.log('Removing old threads...');
-		threadsDB.find({}).sort({updatedAt: -1}).skip(MAX_THREADS).exec(function(err, threads) {
-			threads.map((thread) => {
-				threadsDB.remove({id: thread.id}, {multi: true}, function(err, numRemoved) {
-					console.log('Removed', numRemoved, 'threads.');
-				});
-				postsDB.remove({threadId: thread.id}, {multi: true}, function(err, numRemoved) {
-					console.log('Removed', numRemoved, 'posts.');
+
+		BOARDS.map((boardCode) => {
+			threadsDB.find({boardCode: boardCode}).sort({updatedAt: -1}).skip(MAX_THREADS).exec(function(err, threads) {
+				threads.map((thread) => {
+					threadsDB.remove({id: thread.id}, {multi: true}, function(err, numRemoved) {
+						console.log('Removed', numRemoved, 'threads.');
+					});
+					postsDB.remove({threadId: thread.id}, {multi: true}, function(err, numRemoved) {
+						console.log('Removed', numRemoved, 'posts.');
+					});
 				});
 			});
 		});
+
+
 	}
 
 };
