@@ -1,13 +1,24 @@
 import React from 'react';
 import DateFormatter from '../utils/DateFormatter';
+import PostLink from '../components/PostLink';
 
 export default class Post extends React.Component {
 
 	render() {
+		let post = this.props.post;
 		let sage = this.props.post.email === 'sage';
 		let name = this.props.post.name || 'Аноним';
+		let postText = '';
 
-		return <div className="post-wrapper" style={{ color: '#090E00', fontFamily: 'serif', display: 'table', border: '1px solid #F9E0A8', background: 'none repeat scroll 0% 0% #FFECB2', borderRadius: '3px', marginTop: '4px', minWidth: '380px', paddingRight: '3px' }}>
+		let postLines = post.text.split('\n');
+		// postLines.map((line) => {
+		// 	if (line.match(/^>>\d+$/)) {
+		// 		console.log(line);
+		// 	}
+		// });
+		// console.log(postLines);
+
+		return <div id={post.id} className="post-wrapper" style={{ color: '#090E00', fontFamily: 'serif', display: 'table', border: '1px solid #F9E0A8', background: 'none repeat scroll 0% 0% #FFECB2', borderRadius: '3px', marginTop: '4px', minWidth: '380px', paddingRight: '3px' }}>
 			<label>
 				<input type="checkbox"/>
 				<span className="postername" style={{ fontFamily: 'sans-serif' }}>
@@ -26,7 +37,16 @@ export default class Post extends React.Component {
 			</span>
 
 			<div className="postbody">
-				<blockquote style={{ whiteSpace: 'pre-wrap' }}>{this.props.post.text.replace(/&nbsp;/gm, ' ')}</blockquote>
+				{/*<blockquote style={{ whiteSpace: 'pre-wrap' }}>{postText.replace(/&nbsp;/gm, ' ')}</blockquote>*/}
+
+				<blockquote style={{ whiteSpace: 'pre-wrap' }}>
+					{
+						postLines.map((line) => {
+							return line.match((/^>>\d+$/)) ? <span><a href={'#' + line.slice(2)}>{line + '\n'}</a></span> : <span>{line + '\n'}</span>
+						})
+
+					}
+				</blockquote>
 			</div>
 		</div>;
 	}

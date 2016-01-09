@@ -67,7 +67,7 @@ export default class ThreadView extends React.Component {
 	render() {
 		return (
 			<div>
-				<h1>thread</h1>
+				<h1>/{this.props.params.boardCode}/</h1>
 				<ReplyForm
 				  submitClickHandler={this.sendPostHandler}
 				  updateClickHandler={this.updateBoardHandler}

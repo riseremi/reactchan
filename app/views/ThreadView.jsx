@@ -41,7 +41,7 @@ export default class ThreadView extends React.Component {
 			this.setState({
 				posts: res.body
 			});
-			console.log('[AJAX] - get posts, response body:', res.body);
+			// console.log('[AJAX] - get posts, response body:', res.body);
 		};
 
 		request('GET', 'http://chan-riseremi.c9users.io/posts/' + this.state.threadId).end(callback);
@@ -58,7 +58,7 @@ export default class ThreadView extends React.Component {
 		};
 
 		let callback = (err, res) => {
-			console.log('posting:', data);
+			// console.log('posting:', data);
 			this.updatePosts();
 			document.getElementById('text').value = '';
 			document.getElementById('subject').value = '';
@@ -115,6 +115,16 @@ export default class ThreadView extends React.Component {
 	}
 
 	render() {
+		if (this.state.posts.length === 0) {
+			return <div>
+			<ReplyForm
+			  updateClickHandler={this.updatePosts}
+			  submitClickHandler={this.sendPostHandler}
+			  autoUpdateClickHandler={this.autoUpdateHandler}
+			  showAutoUpdate
+			/>
+			<div>Загрузка...</div></div>;
+		}
 		return <div>
 
 			<ReplyForm

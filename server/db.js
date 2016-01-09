@@ -10,9 +10,9 @@ var threadsDB = new Datastore({
 	autoload: true
 });
 
-var maxPostIndex = -1, maxThreadIndex = -1, MAX_BUMP_COUNT = 15, MAX_THREADS = 3,
+var maxPostIndex = -1, maxThreadIndex = -1, MAX_BUMP_COUNT = 250, MAX_THREADS = 25,
 	AUTO_CLEANUP_TIMEOUT = 1 * 60 * 1000;
-var BOARDS = ['dev', 'beta'];
+var BOARDS = ['dev', 'beta', 'log', 'vg'];
 
 module.exports = {
 
@@ -60,6 +60,7 @@ module.exports = {
 
 		post.timestamp = post.timestamp || new Date().getTime();
 		post.text = post.text.trim();
+		post.id = post.id || ++maxPostIndex;
 		var sage = post.email === 'sage';
 		if (post.firstPost) {
 			post.email = 'nöko';
