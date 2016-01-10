@@ -9,11 +9,11 @@ class Logger {
 	}
 
 	warn(message) {
-		this.log('INFO', message, 'yellow');
+		this.log('WARN', message, 'yellow');
 	}
 
 	error(message) {
-		this.log('INFO', message, 'red');
+		this.log('ERROR', message, 'red');
 	}
 
 	log(scope, message, color) {
