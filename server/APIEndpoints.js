@@ -2,7 +2,7 @@
 
 var nedb = require('./db.js');
 var NCT = require('./NCT');
-var BOARDS = ['dev', 'beta', 'log', 'vg'];
+var BOARDS = ['dev', 'beta', 'vg', 'a'];
 
 var APIEndpoints = {
 	use: function (app) {

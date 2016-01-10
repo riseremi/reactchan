@@ -12,7 +12,7 @@ var threadsDB = new Datastore({
 
 var maxPostIndex = -1, maxThreadIndex = -1, MAX_BUMP_COUNT = 250, MAX_THREADS = 25,
 	AUTO_CLEANUP_TIMEOUT = 1 * 60 * 1000;
-var BOARDS = ['dev', 'beta', 'log', 'vg'];
+var BOARDS = ['dev', 'beta', 'vg', 'a'];
 
 module.exports = {
 
@@ -43,6 +43,11 @@ module.exports = {
 	},
 
 	insertPost: function (post, cb) {
+		if (!post || !post.text) {
+			console.log('[ERROR]: sosi');
+			return;
+		}
+
 		if(post.text.length < 1) {
 			console.error('[ERROR]: Cannot add an empty post');
 			return;

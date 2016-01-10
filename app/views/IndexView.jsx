@@ -9,7 +9,7 @@ export default class IndexView extends React.Component {
 			<Link to='/dev'>Программирование</Link><br />
 			<Link to='/vg'>Видеоигры</Link><br />
 			<Link to='/beta'>Бета доска для всего остального</Link><br />
-			<Link to='/log'>Лытдыбры, что делаете в данный момент и так далее</Link><br />
+			<Link to='/a'>Аниме</Link><br />
 		</div>;
 	}
 
