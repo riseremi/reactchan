@@ -1,4 +1,8 @@
+'use strict';
+
 var Datastore = require('nedb');
+var logger = require('./utils/Logger');
+var config = require('./config');
 
 var postsDB = new Datastore({
 	filename: 'databases/posts.db',
@@ -10,35 +14,39 @@ var threadsDB = new Datastore({
 	autoload: true
 });
 
-var maxPostIndex = -1, maxThreadIndex = -1, MAX_BUMP_COUNT = 250, MAX_THREADS = 25,
-	AUTO_CLEANUP_TIMEOUT = 1 * 60 * 1000;
-var BOARDS = ['dev', 'beta', 'vg', 'a'];
+var maxPostIndex = -1, maxThreadIndex = -1,
+	AUTO_CLEANUP_TIMEOUT = 30 * 60 * 1000;
 
 module.exports = {
 
 	init: function () {
-		// 3 hour * 60 mins * 60 secs * 1000 ms
+		// 1 hour * 60 mins * 60 secs * 1000 ms
 		postsDB.persistence.setAutocompactionInterval(1 * 60 * 60 * 1000);
-		postsDB.ensureIndex({ fieldName: 'id' , unique: true}, function (err) {});
+		postsDB.ensureIndex({ fieldName: 'id' , unique: true}, function (err) {
+			if (err) {
+				logger.warn(err);
+			}
+		});
 
 		// repeat
 		threadsDB.persistence.setAutocompactionInterval(1 * 60 * 60 * 1000);
-		threadsDB.ensureIndex({ fieldName: 'id' , unique: true}, function (err) {});
+		threadsDB.ensureIndex({ fieldName: 'id' , unique: true}, function (err) {
+			if (err) {
+				logger.warn(err);
+			}
+		});
 
 		// set max post index
 		postsDB.find({}).sort({id: -1}).limit(1).exec(function (err, docs) {
-			console.log(docs);
 			maxPostIndex = docs[0] ? docs[0].id : 0;
 		});
 
 		// set max thread index
 		threadsDB.find({}).sort({id: -1}).limit(1).exec(function (err, docs) {
-			console.log(docs);
 			maxThreadIndex = docs[0] ? docs[0].id : 0;
 		});
 
 		// set auto cleanup
-
 		setInterval(() => { this.removeOldThreads(); }, AUTO_CLEANUP_TIMEOUT);
 	},
 
@@ -79,7 +87,7 @@ module.exports = {
 			}
 			var update = sage
 			  ? {$inc: {postsCount: 1}}
-			  : doc.bumpsCount < MAX_BUMP_COUNT
+			  : doc.bumpsCount < config.max_bumps
 			    ? {$inc: {postsCount: 1, bumpsCount: 1}, $set: {updatedAt: post.timestamp}}
 			    : {$inc: {postsCount: 1}};
 
@@ -185,10 +193,10 @@ module.exports = {
 	},
 
 	removeOldThreads: function() {
-		console.log('Removing old threads...');
+		logger.info('Removing old threads...');
 
-		BOARDS.map((boardCode) => {
-			threadsDB.find({boardCode: boardCode}).sort({updatedAt: -1}).skip(MAX_THREADS).exec(function(err, threads) {
+		config.boards.map((boardCode) => {
+			threadsDB.find({boardCode: boardCode}).sort({updatedAt: -1}).skip(config.max_threads).exec(function(err, threads) {
 				threads.map((thread) => {
 					threadsDB.remove({id: thread.id}, {multi: true}, function(err, numRemoved) {
 						console.log('Removed', numRemoved, 'threads.');

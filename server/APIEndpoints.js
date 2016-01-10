@@ -2,7 +2,8 @@
 
 var nedb = require('./db.js');
 var NCT = require('./NCT');
-var BOARDS = ['dev', 'beta', 'vg', 'a'];
+var logger = require('./utils/Logger');
+var config = require('./config');
 
 var APIEndpoints = {
 	use: function (app) {
@@ -110,10 +111,9 @@ function createThread(post, cb) {
 	nedb.insertThread(thread, post, cb);
 }
 
-
 function isBoardExists(boardCode) {
 	let boardExist = false;
-	BOARDS.map((board) => {
+	config.boards.map((board) => {
 		if (boardCode === board && !boardExist) {
 			boardExist = true;
 		}
@@ -130,7 +130,5 @@ function createPost(postJSON) {
 		// create normal post
 	}
 }
-
-
 
 module.exports = APIEndpoints;
