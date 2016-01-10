@@ -6,6 +6,9 @@ var bodyParser = require('body-parser');
 var APIEndpoints = require('./server/APIEndpoints');
 var nedb = require('./server/db.js');
 
+// logger
+var log = require('simple-node-logger').createSimpleLogger();
+
 var SITE_URL = 'http://chan-riseremi.c9users.io/';
 
 // enable gzip compression
@@ -17,6 +20,7 @@ app.use(favicon(__dirname + '/dist/favicon.ico'));
 // write request method and URI in the console
 app.use(function(req, res, next) {
 	console.log('%s: %s', req.method, req.url);
+	log.info('subscription to ', req.method, ' accepted at ', new Date().toJSON());
 	next();
 });
 
