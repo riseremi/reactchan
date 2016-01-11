@@ -58,8 +58,8 @@ module.exports = {
 			return;
 		}
 
-		if(post.text.length > 2000) {
-			logger.error('Post text is too long (2000 characters max).');
+		if(post.text.length > config.max_post_length) {
+			logger.error('Post text is too long (' + config.max_post_length + '2000 characters max).');
 			return;
 		}
 
