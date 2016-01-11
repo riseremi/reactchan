@@ -20,16 +20,14 @@ var maxPostIndex = -1, maxThreadIndex = -1,
 module.exports = {
 
 	init: function () {
-		// 1 hour * 60 mins * 60 secs * 1000 ms
-		postsDB.persistence.setAutocompactionInterval(1 * 60 * 60 * 1000);
+		postsDB.persistence.setAutocompactionInterval(config.autocompaction_interval);
 		postsDB.ensureIndex({ fieldName: 'id' , unique: true}, function (err) {
 			if (err) {
 				logger.warn(err);
 			}
 		});
 
-		// repeat
-		threadsDB.persistence.setAutocompactionInterval(1 * 60 * 60 * 1000);
+		threadsDB.persistence.setAutocompactionInterval(config.autocompaction_interval);
 		threadsDB.ensureIndex({ fieldName: 'id' , unique: true}, function (err) {
 			if (err) {
 				logger.warn(err);
@@ -47,7 +45,7 @@ module.exports = {
 		});
 
 		// set auto cleanup
-		setInterval(() => { this.removeOldThreads(); }, AUTO_CLEANUP_TIMEOUT);
+		setInterval(() => { this.removeOldThreads(); }, config.autocleanup_interval);
 	},
 
 	insertPost: function (post, cb) {
