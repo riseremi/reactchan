@@ -54,17 +54,17 @@ module.exports = {
 		}
 
 		if(post.text.length < 1) {
-			console.error('[ERROR]: Cannot add an empty post');
+			logger.error('Post text is empty.');
 			return;
 		}
 
 		if(post.text.length > 2000) {
-			console.error('[ERROR]: Post body is too long');
+			logger.error('Post text is too long (2000 characters max).');
 			return;
 		}
 
 		if (maxPostIndex < 0) {
-			console.error('[ERROR]: Negative max post id.');
+			logger.error('Negative max post id.');
 			return;
 		}
 
@@ -79,7 +79,7 @@ module.exports = {
 
 		threadsDB.findOne({id: post.threadId}, function(err, doc) {
 			if (!doc) {
-				console.log('DEAD THREAD');
+				logger.error('Thread doesn\'t exist.');
 				return;
 			}
 			var update = sage
