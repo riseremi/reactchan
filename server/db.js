@@ -5,7 +5,7 @@ var logger = require('./utils/Logger');
 var config = require('./config');
 
 var postsDB = new Datastore({
-	filename: 'databases/posts.db',
+	filename: 'databases/posts2.db',
 	autoload: true
 });
 
@@ -38,12 +38,12 @@ module.exports = {
 
 		// set max post index
 		postsDB.find({}).sort({id: -1}).limit(1).exec(function (err, docs) {
-			maxPostIndex = docs[0] ? docs[0].id : 0;
+			maxPostIndex = docs.length > 0 ? docs[0].id : 0;
 		});
 
 		// set max thread index
 		threadsDB.find({}).sort({id: -1}).limit(1).exec(function (err, docs) {
-			maxThreadIndex = docs[0] ? docs[0].id : 0;
+			maxThreadIndex = docs.length > 0 ? docs[0].id : 0;
 		});
 
 		// set auto cleanup
