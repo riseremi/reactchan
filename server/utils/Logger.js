@@ -18,7 +18,7 @@ class Logger {
 
 	log(scope, message, color) {
 		let fn = colors[color];
-		console.log(fn.inverse(`[${scope}]`), message);
+		console.log(fn.inverse(` ${scope} `), message);
 	}
 }
 
