@@ -98,7 +98,7 @@ function createThread(post, cb) {
 	// create thread + OP post
 
 	if (!isBoardExists(post.boardCode)) {
-		console.log('Requested board does not exist.');
+		logger.warn('Requested board does not exist.');
 		return;
 	}
 

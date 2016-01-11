@@ -5,7 +5,7 @@ var logger = require('./utils/Logger');
 var config = require('./config');
 
 var postsDB = new Datastore({
-	filename: 'databases/posts2.db',
+	filename: 'databases/posts.db',
 	autoload: true
 });
 
@@ -48,18 +48,13 @@ module.exports = {
 	},
 
 	insertPost: function (post, cb) {
-		if (!post || !post.text) {
-			console.log('[ERROR]: sosi');
-			return;
-		}
-
-		if(post.text.length < 1) {
-			logger.error('Post text is empty.');
+		if (!post.text) {
+			logger.warn('Post text is empty.');
 			return;
 		}
 
 		if(post.text.length > config.max_post_length) {
-			logger.error('Post text is too long (' + config.max_post_length + '2000 characters max).');
+			logger.warn('Post text is too long (' + config.max_post_length + '2000 characters max).');
 			return;
 		}
 
@@ -79,7 +74,7 @@ module.exports = {
 
 		threadsDB.findOne({id: post.threadId}, function(err, doc) {
 			if (!doc) {
-				logger.error('Thread doesn\'t exist.');
+				logger.warn('Thread doesn\'t exist.');
 				return;
 			}
 			var update = sage
@@ -99,12 +94,12 @@ module.exports = {
 		var _self = this;
 
 		if (thread.subject.length < 1) {
-			console.error('[ERROR]: Subject is empty');
+			logger.warn('Thread subject is empty');
 			return;
 		}
 
 		if (thread.subject.length > 350) {
-			console.error('[ERROR]: Subject is too long.');
+			logger.warn('Thread subject is too long.');
 			return;
 		}
 
@@ -115,18 +110,18 @@ module.exports = {
 
 
 		// post check COPYPASTE LOL KEK AHAH
-		if(post.text.length < 1) {
-			console.error('[ERROR]: Cannot add an empty post');
+		if (!post.text) {
+			logger.warn('Post text is empty.');
 			return;
 		}
 
-		if(post.text.length > 2000) {
-			console.error('[ERROR]: Post body is too long');
+		if(post.text.length > config.max_post_length) {
+			logger.warn('Post text is too long (' + config.max_post_length + '2000 characters max).');
 			return;
 		}
 
 		if (maxPostIndex < 0) {
-			console.error('[ERROR]: Negative max post id.');
+			logger.error('Negative max post id.');
 			return;
 		}
 
