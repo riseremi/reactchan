@@ -121,14 +121,4 @@ function isBoardExists(boardCode) {
 	return boardExist;
 }
 
-function createPost(postJSON) {
-	// create post
-	if (postJSON.email === 'sage') {
-		// create sage post
-	}
-	else {
-		// create normal post
-	}
-}
-
 module.exports = APIEndpoints;
