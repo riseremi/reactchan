@@ -48,13 +48,7 @@ module.exports = {
 	},
 
 	insertPost: function (post, cb) {
-		if (!post.text) {
-			logger.warn('Post text is empty.');
-			return;
-		}
-
-		if(post.text.length > config.max_post_length) {
-			logger.warn('Post text is too long (' + config.max_post_length + '2000 characters max).');
+		if (!this.validatePost(post)) {
 			return;
 		}
 
@@ -109,14 +103,7 @@ module.exports = {
 		}
 
 
-		// post check COPYPASTE LOL KEK AHAH
-		if (!post.text) {
-			logger.warn('Post text is empty.');
-			return;
-		}
-
-		if(post.text.length > config.max_post_length) {
-			logger.warn('Post text is too long (' + config.max_post_length + '2000 characters max).');
+		if (!this.validatePost(post)) {
 			return;
 		}
 
@@ -182,6 +169,19 @@ module.exports = {
 		postsDB.findOne({threadId: threadId}, {_id: 0}).sort({id: 1}).exec(function(err, post) {
 			cb(post);
 		});
+	},
+
+	validatePost: function(post) {
+		if (!post.text) {
+			logger.warn('Post text is empty.');
+			return false;
+		}
+
+		if(post.text.length > config.max_post_length) {
+			logger.warn('Post text is too long (' + config.max_post_length + ' characters max).');
+			return false;
+		}
+		return true;
 	},
 
 	removeOldThreads: function() {
