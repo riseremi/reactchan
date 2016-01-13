@@ -66,10 +66,6 @@ var route = function (app) {
 		});
 	});
 
-	app.delete('/api', function (req, res) {
-		res.send('DELETE');
-	});
-
 	app.post('/posts', function (req, res) {
 		// one more time
 		if (!req.headers['referer']) {
@@ -86,10 +82,6 @@ var route = function (app) {
 			});
 		});
 
-	});
-
-	app.put('/api', function (req, res) {
-		res.send('PUT');
 	});
 };
 
