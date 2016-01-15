@@ -4,6 +4,7 @@ var nedb = require('./db.js');
 var NCT = require('./NCT');
 var logger = require('./utils/Logger');
 var config = require('./config');
+var tripcode = require('tripcode');
 
 var APIEndpoints = {
 	use: function (app) {
@@ -19,7 +20,7 @@ var route = function (app) {
 		// res.send('GET: ' + req.param('name'));
 	});
 
-	// submit post or thread
+	// submit thread
 	var postSomething = function (req, res) {
 		// oh yeah, let's do that
 		if (!req.headers['referer']) {
@@ -30,7 +31,6 @@ var route = function (app) {
 		postJSON.timestamp = new Date().getTime();
 
 		if (postJSON.subject) {
-			// create thread
 			createThread(postJSON, function () {
 				res.json({
 					status: 'success'
@@ -75,6 +75,15 @@ var route = function (app) {
 
 		// ;)
 		post.text = NCT(post.text);
+
+		// extract "password" so we can generate tripcode
+		if (post.name.indexOf('#') !== -1) {
+			logger.warn('RAW Tripcode: ' + encodeURIComponent(post.name.split('#')[1]));
+
+			let parts = post.name.split('#');
+			post.name = parts[0];
+			post.tripcode = tripcode(parts[1]);
+		}
 
 		nedb.insertPost(post, function () {
 			res.json({

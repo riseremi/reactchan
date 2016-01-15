@@ -6,6 +6,7 @@ export default class Post extends React.Component {
 
 	render() {
 		let post = this.props.post;
+		let tripcode = post.tripcode || '';
 		let sage = this.props.post.email === 'sage';
 		let name = this.props.post.name || 'Аноним';
 		let postText = '';
@@ -25,7 +26,7 @@ export default class Post extends React.Component {
 					<span style={sage ? { color: 'red', fontWeight: 'bold' } : {} }>
 						{ this.props.post.email !== '' && this.props.post.email !== 'nöko' && this.props.post.email !== 'sage'
 						  ? <a href={'mailto:' + this.props.post.email}>{name}&nbsp;</a>
-						  : <span>{name}&nbsp;</span>
+						  : <span>{name}&nbsp;<span style={{ color: '#228854', fontSize: 15 }}>{tripcode ? '!' + tripcode + ' ' : null}</span></span>
 						}
 					</span>
 				</span>
