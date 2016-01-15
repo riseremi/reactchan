@@ -87,12 +87,12 @@ module.exports = {
 	insertThread: function (thread, post, cb) {
 		var _self = this;
 
-		if (thread.subject.length < 1) {
+		if (!thread.subject) {
 			logger.warn('Thread subject is empty');
 			return;
 		}
 
-		if (thread.subject.length > 350) {
+		if (thread.subject.length > config.max_subject_length) {
 			logger.warn('Thread subject is too long.');
 			return;
 		}
@@ -101,7 +101,6 @@ module.exports = {
 			console.error('[ERROR]: Negative max thread id.');
 			return;
 		}
-
 
 		if (!this.validatePost(post)) {
 			return;
@@ -112,13 +111,12 @@ module.exports = {
 			return;
 		}
 
-		if (post.name.length > 64) {
+		if (post.name.length > config.max_name_length) {
 			console.error('[ERROR]: Name is too long.');
 			return;
 		}
 
-
-		if (post.email.length > 64) {
+		if (post.email.length > config.max_email_length) {
 			console.error('[ERROR]: Email is too long.');
 			return;
 		}
@@ -126,9 +124,15 @@ module.exports = {
 		thread.id = ++maxThreadIndex;
 		thread.postsCount = 0;
 		thread.bumpsCount = 0;
-		thread.firstPostText = post.text.substr(0, 220) + (post.text.length > 220 ? '...' : '');
+		thread.firstPostText = post.text;
 
-		post.id = ++maxPostIndex;
+		let cutFirstPost = post.text.length > config.first_post_preview_length;
+
+		if (cutFirstPost) {
+			thread.firstPostText = post.text.slice(0, config.first_post_preview_length) + '...';
+		}
+
+		post.id = parseInt(maxPostIndex, 10);
 		thread.firstPostId = post.id;
 
 		threadsDB.insert(thread, function (err, newThread) {
@@ -159,7 +163,6 @@ module.exports = {
 	},
 
 	findThreadsWithFirstPostPreview: function (boardCode, cb) {
-		// find all threads
 		threadsDB.find({boardCode: boardCode}, {_id: 0}).sort({id: -1}).exec(function(err, threads) {
 			cb(threads);
 		});
