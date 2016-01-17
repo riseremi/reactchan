@@ -44,8 +44,6 @@ var route = function (app) {
 	};
 	app.post('/board', postSomething);
 
-
-
 	// load thread list
 	var getThreadList = function (req, res) {
 		var boardCode = req.params.boardCode;
@@ -63,6 +61,14 @@ var route = function (app) {
 		res.get('Content-Type') || res.set('Content-Type', 'application/json');
 		nedb.findPostsByThreadId(threadId, function (posts) {
 			res.json(posts);
+		});
+	});
+
+	app.get('/post/:id', function (req, res) {
+		var id = parseInt(req.params.id, 10);
+
+		nedb.findPostById(id, function(post) {
+			res.json(post);
 		});
 	});
 

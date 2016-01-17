@@ -174,6 +174,12 @@ module.exports = {
 		});
 	},
 
+	findPostById: function(id, cb) {
+		postsDB.findOne({id: id}, {_id: 0}).exec(function(err, post) {
+			cb(post);
+		});
+	},
+
 	validatePost: function(post) {
 		if (!post.text) {
 			logger.warn('Post text is empty.');
