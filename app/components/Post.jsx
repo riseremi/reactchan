@@ -1,8 +1,28 @@
 import React from 'react';
+import request from 'superagent';
 import DateFormatter from '../utils/DateFormatter';
 import PostLink from '../components/PostLink';
 
 export default class Post extends React.Component {
+
+	constructor(props) {
+		super(props);
+		this.state = {hoverPost: {}};
+
+		this.loadSinglePost = this.loadSinglePost.bind(this);
+		this.clearSinglePost = this.clearSinglePost.bind(this);
+	}
+
+	loadSinglePost() {
+		request.get('http://chan-riseremi.c9users.io/post/166')
+			.end((err, res) => {
+				this.setState({hoverPost: res.body});
+			});
+	}
+
+	clearSinglePost() {
+		this.setState({hoverPost: null});
+	}
 
 	render() {
 		let post = this.props.post;
@@ -12,14 +32,8 @@ export default class Post extends React.Component {
 		let postText = '';
 
 		let postLines = post.text.split('\n');
-		// postLines.map((line) => {
-		// 	if (line.match(/^>>\d+$/)) {
-		// 		console.log(line);
-		// 	}
-		// });
-		// console.log(postLines);
 
-		return <div id={post.id} className="post-wrapper" style={{ color: '#090E00', fontFamily: 'serif', display: 'table', border: '1px solid #F9E0A8', background: 'none repeat scroll 0% 0% #FFECB2', borderRadius: '3px', marginTop: '4px', minWidth: '380px', paddingRight: '3px' }}>
+		return <div onMouseLeave={this.clearSinglePost} id={post.id} className="post-wrapper" style={{ color: '#090E00', fontFamily: 'serif', display: 'table', border: '1px solid #F9E0A8', background: 'none repeat scroll 0% 0% #FFECB2', borderRadius: '3px', marginTop: '4px', minWidth: '380px', paddingRight: '3px' }}>
 			<label>
 				<input type="checkbox"/>
 				<span className="postername" style={{ fontFamily: 'sans-serif' }}>
@@ -43,12 +57,14 @@ export default class Post extends React.Component {
 				<blockquote style={{ whiteSpace: 'pre-wrap' }}>
 					{
 						postLines.map((line) => {
-							return line.match((/^>>\d+$/)) ? <span><a href={'#' + line.slice(2)}>{line + '\n'}</a></span> : <span>{line + '\n'}</span>
+							return line.match((/^>>\d+$/)) ? <span key={Math.random()}><a onMouseEnter={this.loadSinglePost} href={'#' + line.slice(2)}>{line + '\n'}</a></span> : <span key={Math.random()}>{line + '\n'}</span>;
 						})
 
 					}
 				</blockquote>
 			</div>
+
+			<div>{this.state.hoverPost ? this.state.hoverPost.text : null}</div>
 		</div>;
 	}
 
