@@ -2,19 +2,21 @@ import React from 'react';
 import request from 'superagent';
 import DateFormatter from '../utils/DateFormatter';
 import PostLink from '../components/PostLink';
+import PostInner from './Post';
 
 export default class Post extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {hoverPost: {}};
+		this.state = {hoverPost: null};
 
 		this.loadSinglePost = this.loadSinglePost.bind(this);
 		this.clearSinglePost = this.clearSinglePost.bind(this);
 	}
 
-	loadSinglePost() {
-		request.get('http://chan-riseremi.c9users.io/post/166')
+	loadSinglePost(event) {
+		let postId = parseInt(event.target.getAttribute('href').slice(1), 10);
+		request.get('http://chan-riseremi.c9users.io/post/' + postId)
 			.end((err, res) => {
 				this.setState({hoverPost: res.body});
 			});
@@ -33,7 +35,7 @@ export default class Post extends React.Component {
 
 		let postLines = post.text.split('\n');
 
-		return <div onMouseLeave={this.clearSinglePost} id={post.id} className="post-wrapper" style={{ color: '#090E00', fontFamily: 'serif', display: 'table', border: '1px solid #F9E0A8', background: 'none repeat scroll 0% 0% #FFECB2', borderRadius: '3px', marginTop: '4px', minWidth: '380px', paddingRight: '3px' }}>
+		return <div onMouseLeave={this.clearSinglePost} id={post.id} className="post-wrapper" style={{ position: 'relative', color: '#090E00', fontFamily: 'serif', display: 'table', border: '1px solid #F9E0A8', background: 'none repeat scroll 0% 0% #FFECB2', borderRadius: '3px', marginTop: '4px', minWidth: '380px', paddingRight: '3px', boxShadow: (this.props.hover ?  '1px 1px 15px rgba(0,0,0,.2)' : 'none') }}>
 			<label>
 				<input type="checkbox"/>
 				<span className="postername" style={{ fontFamily: 'sans-serif' }}>
@@ -64,7 +66,7 @@ export default class Post extends React.Component {
 				</blockquote>
 			</div>
 
-			<div>{this.state.hoverPost ? this.state.hoverPost.text : null}</div>
+			<div style={{ position: 'absolute', zIndex: '10', left: 45 }}>{this.state.hoverPost ? <PostInner hover post={this.state.hoverPost} /> : null}</div>
 		</div>;
 	}
 
