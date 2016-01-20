@@ -12,6 +12,7 @@ export default class Post extends React.Component {
 
 		this.loadSinglePost = this.loadSinglePost.bind(this);
 		this.clearSinglePost = this.clearSinglePost.bind(this);
+		this.pasteReflinkToTheTextArea = this.pasteReflinkToTheTextArea.bind(this);
 	}
 
 	loadSinglePost(event) {
@@ -20,6 +21,10 @@ export default class Post extends React.Component {
 			.end((err, res) => {
 				this.setState({hoverPost: res.body});
 			});
+	}
+
+	pasteReflinkToTheTextArea(event) {
+		document.getElementById('text').value += '>>' + event.target.getAttribute('data-id') + '\n';
 	}
 
 	clearSinglePost() {
@@ -51,6 +56,10 @@ export default class Post extends React.Component {
 			<span className="reflink">
 				<a style={{ textDecoration: 'none', color: '#090E00' }} href={'#' + this.props.post.id}>No.&nbsp;</a>
 				<a style={{ textDecoration: 'none', color: '#090E00' }} href={'#' + this.props.post.id}>{this.props.post.id}</a>
+			</span>
+
+			<span style={{ cursor: 'pointer' }}>
+				<em data-id={this.props.post.id} onClick={this.pasteReflinkToTheTextArea}>&nbsp;Reply</em>
 			</span>
 
 			<div className="postbody">
