@@ -1,3 +1,16 @@
 body {
     font: 18px monospace;
 }
+
+.post-wrapper {
+    position: relative;
+    color: #090E00;
+    font-family: 'serif';
+    display: table;
+    border: 1px solid #F9E0A8;
+    background: none repeat scroll 0% 0% #FFECB2;
+    border-radius: 3px;
+    margin-top: 4px;
+    min-width: 380px;
+    padding-right: 3px;
+}

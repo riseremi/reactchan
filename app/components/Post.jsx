@@ -39,7 +39,7 @@ export default class Post extends React.Component {
 
 		let postLines = post.text.split('\n');
 
-		return <div onMouseLeave={this.clearSinglePost} id={post.id} className="post-wrapper" style={{ position: 'relative', color: '#090E00', fontFamily: 'serif', display: 'table', border: '1px solid #F9E0A8', background: 'none repeat scroll 0% 0% #FFECB2', borderRadius: '3px', marginTop: '4px', minWidth: '380px', paddingRight: '3px', boxShadow: (this.props.hover ?  '1px 1px 15px rgba(0,0,0,.2)' : 'none') }}>
+		return <div onMouseLeave={this.clearSinglePost} id={post.id} className="post-wrapper" style={{ boxShadow: (this.props.hover ?  '1px 1px 15px rgba(0,0,0,.2)' : 'none') }}>
 			<label>
 				<input type="checkbox"/>
 				<span className="postername" style={{ fontFamily: 'sans-serif' }}>
