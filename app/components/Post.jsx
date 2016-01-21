@@ -1,7 +1,6 @@
 import React from 'react';
 import request from 'superagent';
 import DateFormatter from '../utils/DateFormatter';
-import PostLink from '../components/PostLink';
 import PostInner from './Post';
 
 export default class Post extends React.Component {

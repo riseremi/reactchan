@@ -1,5 +1,4 @@
 import React from 'react';
-import DateFormatter from '../utils/DateFormatter';
 
 export default class ReplyForm extends React.Component {
 
