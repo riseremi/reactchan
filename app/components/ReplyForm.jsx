@@ -1,12 +1,9 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 
-export default class ReplyForm extends React.Component {
+export default class ReplyForm extends Component {
 
 	render() {
-		let updateClickHandler = this.props.updateClickHandler;
-		let submitClickHandler = this.props.submitClickHandler;
-		let autoUpdateClickHandler = this.props.autoUpdateClickHandler;
-		let showAutoUpdate = this.props.showAutoUpdate;
+		const { updateClickHandler, submitClickHandler, autoUpdateClickHandler, showAutoUpdate } = this.props;
 
 		return <div>
 			<input className='reply-form__input' id="name" placeholder="Имя" /><br />
@@ -20,14 +17,20 @@ export default class ReplyForm extends React.Component {
 			<button className="refresh" onClick={updateClickHandler}>Обновить</button>
 			&nbsp;
 
-			{ showAutoUpdate ?
+			{ showAutoUpdate &&
 				<label className="postername" style={{ fontFamily: 'sans-serif' }}>
 					<input type="checkbox" onChange={autoUpdateClickHandler} />
 					<span id="autoUpdate-text">Автообновление</span>
 				</label>
-				: null
 			}
 		</div>;
 	}
 
 }
+
+ReplyForm.propTypes = {
+	updateClickHandler: PropTypes.func.isRequired,
+	submitClickHandler: PropTypes.func.isRequired,
+	autoUpdateClickHandler: PropTypes.func,
+	showAutoUpdate: PropTypes.bool
+};
