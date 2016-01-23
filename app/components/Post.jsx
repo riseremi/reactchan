@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import request from 'superagent';
 import DateFormatter from '../utils/DateFormatter';
 import PostInner from './Post';
 
-export default class Post extends React.Component {
+export default class Post extends Component {
 
 	constructor(props) {
 		super(props);
@@ -31,39 +31,35 @@ export default class Post extends React.Component {
 	}
 
 	render() {
-		let post = this.props.post;
+		const { post, hover } = this.props;
 		let tripcode = post.tripcode || '';
-		let sage = this.props.post.email === 'sage';
-		let name = this.props.post.name || 'Аноним';
-		let postText = '';
-
+		let sage = post.email === 'sage';
+		let name = post.name || 'Аноним';
 		let postLines = post.text.split('\n');
 
-		return <div onMouseLeave={this.clearSinglePost} id={post.id} className="post-wrapper" style={{ boxShadow: (this.props.hover ?  '1px 1px 15px rgba(0,0,0,.2)' : 'none') }}>
+		return <div onMouseLeave={this.clearSinglePost} id={post.id} className="post-wrapper" style={{ boxShadow: (hover ?  '1px 1px 15px rgba(0,0,0,.2)' : 'none') }}>
 			<label>
 				<input type="checkbox"/>
 				<span className="postername" style={{ fontFamily: 'sans-serif' }}>
 					<span style={sage ? { color: 'red', fontWeight: 'bold' } : {} }>
-						{ this.props.post.email !== '' && this.props.post.email !== 'nöko' && this.props.post.email !== 'sage'
-						  ? <a href={'mailto:' + this.props.post.email}>{name}&nbsp;</a>
+						{ post.email !== '' && post.email !== 'nöko' && post.email !== 'sage'
+						  ? <a href={'mailto:' + post.email}>{name}&nbsp;</a>
 						  : <span>{name}&nbsp;<span style={{ color: '#228854', fontSize: 15 }}>{tripcode ? '!' + tripcode + ' ' : null}</span></span>
 						}
 					</span>
 				</span>
-				<span className="time">{DateFormatter.getPostDate(this.props.post.timestamp)} {DateFormatter.getPostTime(this.props.post.timestamp)}&nbsp;</span>
+				<span className="time">{DateFormatter.getPostDate(post.timestamp)} {DateFormatter.getPostTime(post.timestamp)}&nbsp;</span>
 			</label>
 			<span className="reflink">
-				<a style={{ textDecoration: 'none', color: '#090E00' }} href={'#' + this.props.post.id}>No.&nbsp;</a>
-				<a style={{ textDecoration: 'none', color: '#090E00' }} href={'#' + this.props.post.id}>{this.props.post.id}</a>
+				<a style={{ textDecoration: 'none', color: '#090E00' }} href={'#' + post.id}>No.&nbsp;</a>
+				<a style={{ textDecoration: 'none', color: '#090E00' }} href={'#' + post.id}>{post.id}</a>
 			</span>
 
 			<span style={{ cursor: 'pointer' }}>
-				<em data-id={this.props.post.id} onClick={this.pasteReflinkToTheTextArea}>&nbsp;Reply</em>
+				<em data-id={post.id} onClick={this.pasteReflinkToTheTextArea}>&nbsp;Reply</em>
 			</span>
 
 			<div className="postbody">
-				{/*<blockquote style={{ whiteSpace: 'pre-wrap' }}>{postText.replace(/&nbsp;/gm, ' ')}</blockquote>*/}
-
 				<blockquote style={{ whiteSpace: 'pre-wrap' }}>
 					{
 						postLines.map((line) => {
@@ -79,3 +75,8 @@ export default class Post extends React.Component {
 	}
 
 }
+
+Post.propTypes = {
+	post: PropTypes.object.isRequired,
+	hover: PropTypes.bool
+};
