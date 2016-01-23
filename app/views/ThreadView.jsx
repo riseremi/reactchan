@@ -134,11 +134,7 @@ export default class ThreadView extends React.Component {
 			  showAutoUpdate
 			/>
 
-			{
-				this.state.posts.map((post) => {
-					return <Post key={post.id} post={post} />;
-				})
-			}
+			{ this.state.posts.map(post => <Post key={post.id} post={post} />) }
 
 		</div>;
 	}
