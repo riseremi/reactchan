@@ -58,7 +58,6 @@ export default class ThreadView extends React.Component {
 		};
 
 		let callback = (err, res) => {
-			// console.log('posting:', data);
 			this.updatePosts();
 			document.getElementById('text').value = '';
 			document.getElementById('subject').value = '';
