@@ -70,7 +70,7 @@ export default class Post extends Component {
 				</blockquote>
 			</div>
 
-			<div style={{ position: 'absolute', zIndex: '10', left: 45 }}>{this.state.hoverPost ? <PostInner hover post={this.state.hoverPost} /> : null}</div>
+			<div style={{ position: 'absolute', zIndex: '10', top: 75, left: 45 }}>{this.state.hoverPost ? <PostInner hover post={this.state.hoverPost} /> : null}</div>
 		</div>;
 	}
 
