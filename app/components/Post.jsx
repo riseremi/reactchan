@@ -51,8 +51,8 @@ export default class Post extends Component {
 				<span className="time">{DateFormatter.getPostDate(post.timestamp)} {DateFormatter.getPostTime(post.timestamp)}&nbsp;</span>
 			</label>
 			<span className="reflink">
-				<a style={{ textDecoration: 'none', color: '#090E00' }} href={'#' + post.id}>No.&nbsp;</a>
-				<a style={{ textDecoration: 'none', color: '#090E00' }} href={'#' + post.id}>{post.id}</a>
+				<a href={'#' + post.id}>No.&nbsp;</a>
+				<a href={'#' + post.id}>{post.id}</a>
 			</span>
 
 			<span style={{ cursor: 'pointer' }}>
