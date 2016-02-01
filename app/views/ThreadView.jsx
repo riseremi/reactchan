@@ -27,7 +27,6 @@ export default class ThreadView extends React.Component {
 	componentDidMount() {
 		this.updatePosts();
 
-		// Assign to individual textarea (most efficient)
 		document.getElementById('text').addEventListener('keydown', (e) => {
 			if (e.keyCode == 13 && e.ctrlKey) {
 				this.sendPostHandler();
@@ -41,7 +40,6 @@ export default class ThreadView extends React.Component {
 			this.setState({
 				posts: res.body
 			});
-			// console.log('[AJAX] - get posts, response body:', res.body);
 		};
 
 		request('GET', 'http://chan-riseremi.c9users.io/posts/' + this.state.threadId).end(callback);
